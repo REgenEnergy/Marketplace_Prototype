@@ -1,0 +1,569 @@
+cidl: "0.8"
+info:
+  name: regen
+  title: Regen
+  version: 0.1.0
+  summary: TODO
+  license:
+    name: Unlicense
+    identifier: Unlicense
+types:
+  Badge:
+    summary: TODO
+    solana:
+      seeds:
+        - name: badge
+        - name: name
+          type: string
+    fields:
+      - name: name
+        type: string
+        solana:
+          attributes: [cap:32]
+      - name: description
+        type: rs:option<string>
+        solana:
+          # Correct length?
+          attributes: [cap:225]
+      - name: points
+        type: u32
+      - name: perks
+        # This should be a rs:vec<string> but we don't support this yet
+        # we can follow a convention like perk_name|other_perk_name and
+        # then on client we split by | to get an array of string
+        type: string
+        solana:
+          # Correct length?
+          attributes: [cap:225]
+      - name: image
+        type: string
+        solana:
+          # Correct length?
+          attributes: [cap:96]
+      - name: kind # type
+        type: u8
+        description: |-
+          0: Supplier
+          1: Buyer
+  User:
+    summary: TODO
+    solana:
+      seeds:
+        - name: user
+        - name: id
+          type: string
+    fields:
+      - name: id
+        type: string
+        solana:
+          attributes: [cap:32]
+      - name: balance
+        type: u64
+      - name: role
+        type: u8
+        description: |-
+          0: admin
+          1: supplier
+          2: buyer
+      - name: company
+        type: rs:option<sol:pubkey>
+      - name: points
+        type: u64
+      - name: badge
+        type: rs:option<sol:pubkey>
+  Company:
+    summary: TODO
+    solana:
+      seeds:
+        - name: company
+        - name: user
+          type: sol:pubkey
+    fields:
+      - name: name
+        type: string
+        solana:
+          # TODO: Set the correct capacity (length) of the string
+          attributes: [cap:96]
+      - name: registration_number # Can this info be public?
+        type: string
+        solana:
+          # TODO: Set the correct capacity (length) of the string
+          attributes: [cap:96]
+      - name: address # Can this info be public?
+        type: string
+        solana:
+          # TODO: Set the correct capacity (length) of the string
+          attributes: [cap:96]
+      - name: accreditations
+        type: rs:option<string>
+        solana:
+          # TODO: Set the correct capacity (length) of the string
+          attributes: [cap:96]
+      - name: contact_number # Can this info be public?
+        type: rs:option<string>
+        solana:
+          # TODO: Set the correct capacity (length) of the string
+          attributes: [cap:96]
+      - name: key_person # Can this info be public?
+        type: string
+        solana:
+          # TODO: Set the correct capacity (length) of the string
+          attributes: [cap:96]
+      - name: key_person_role # Can this info be public?
+        type: string
+        solana:
+          # TODO: Set the correct capacity (length) of the string
+          attributes: [cap:96]
+      - name: futures_enabled
+        type: bool
+      - name: user
+        type: sol:pubkey
+  ShippingAddress:
+    summary: TODO
+    solana:
+      seeds:
+        - name: company_shipping_address
+        - name: company
+          type: sol:pubkey
+    fields:
+      - name: label
+        type: string
+        solana:
+          # TODO: Set the correct capacity (length) of the string
+          attributes: [cap:96]
+      - name: address
+        type: string
+        solana:
+          # TODO: Set the correct capacity (length) of the string
+          attributes: [cap:96]
+      - name: company
+        type: sol:pubkey
+  ShippingInformation:
+    summary: TODO
+    solana:
+      seeds:
+        - name: company_shipping_information
+        - name: company
+          type: sol:pubkey
+    fields:
+      - name: radius
+        type: string
+        solana:
+          # TODO: Set the correct capacity (length) of the string
+          attributes: [cap:96]
+      - name: address
+        type: string
+        solana:
+          # TODO: Set the correct capacity (length) of the string
+          attributes: [cap:96]
+      - name: method
+        type: string
+        solana:
+          # TODO: Set the correct capacity (length) of the string
+          attributes: [cap:96]
+      - name: provider
+        type: string
+        solana:
+          # TODO: Set the correct capacity (length) of the string
+          attributes: [cap:96]
+      - name: cost
+        type: u64
+      - name: currency
+        type: string
+        solana:
+          # TODO: Set the correct capacity (length) of the string
+          attributes: [cap:4]
+      - name: insurance_provider
+        type: rs:option<string>
+        solana:
+          # TODO: Set the correct capacity (length) of the string
+          attributes: [cap:96]
+      - name: insurance_charges
+        type: rs:option<u64>
+      - name: other_charges
+        type: rs:option<u64>
+      - name: company
+        type: sol:pubkey
+  Auction:
+    summary: TODO
+    solana:
+      seeds:
+        - name: auction
+        - name: company
+          type: sol:pubkey
+    fields:
+      - name: name
+        type: string
+        solana:
+          # TODO: Set the correct capacity (length) of the string
+          attributes: [cap:96]
+      - name: purity_level
+        type: string
+        solana:
+          # TODO: Set the correct capacity (length) of the string
+          attributes: [cap:96]
+      - name: color_of_hydrogen
+        type: string
+        solana:
+          # TODO: Set the correct capacity (length) of the string
+          attributes: [cap:96]
+      - name: weight
+        type: f64
+      - name: thumbnail_image
+        type: rs:option<string>
+        solana:
+          # TODO: Set the correct capacity (length) of the string
+          attributes: [cap:96]
+      - name: unit
+        type: sol:pubkey
+      - name: price
+        type: f64 # Maybe not work with floats for precision?
+      - name: end_date
+        description: Timestamp for the end date
+        type: u64
+      - name: starting_bid
+        type: f64
+      - name: currency
+        type: sol:pubkey
+      - name: company
+        type: sol:pubkey
+      - name: order
+        type: rs:option<sol:pubkey>
+      - name: status
+        type: u8
+        description: |-
+          0: Open
+          1: Completed
+          2: Cancelled
+      - name: kind # type
+        type: u8
+        description: |-
+          0: Bid
+          1: Purchase
+      - name: label
+        type: u8
+        description: |-
+          0: RE
+          1: RE1
+  AuctionBid:
+    summary: TODO
+    solana:
+      seeds:
+        - name: auction_bid
+        - name: auction
+          type: sol:pubkey
+        - name: index
+          type: u32
+    fields:
+      - name: amount
+        type: u64
+      - name: is_anonymous
+        type: bool
+  AuctionWeightUnit:
+    summary: TODO
+    solana:
+      seeds:
+        - name: auction_weight_unit
+        - name: name
+          type: string
+    fields:
+      - name: name
+        type: string
+        solana:
+          # Is this the correct capacity (length) ?
+          attributes: [cap:32]
+      - name: conversion_rate
+        type: u64
+  Currency:
+    summary: TODO
+    solana:
+      seeds:
+        - name: currrency
+        - name: symbol
+          type: string
+    fields:
+      - name: symbol
+        type: string
+        solana:
+          # Is this the correct capacity (length) ?
+          attributes: [cap:32]
+      - name: name
+        type: string
+        solana:
+          # Is this the correct capacity (length) ?
+          attributes: [cap:32]
+      - name: value
+        type: f64 # Should it be float?
+  Order:
+    summary: TODO
+    solana:
+      seeds:
+        - name: order
+        - name: auction
+          type: sol:pubkey
+    fields:
+      - name: status
+        type: u8
+        description: |-
+          0: DocumentUpload
+          1: DocumentVerification
+          2: Shipping
+          3: ShipmentVerification
+          4: ProductVerification
+          5: Completed
+      - name: shipment_status
+        type: u8
+        description: |-
+          0: Pending
+          1: Shipping
+          2: Delivered
+      - name: transaction_status
+        type: u8
+        description: |-
+          0: BuyerPayment
+          1: SellerDownPayment
+          2: SellerFullPayment
+      - name: transaction
+        type: rs:option<sol:pubkey>
+      - name: shipment_signature
+        type: rs:option<string>
+        solana:
+          # Correct cap?
+          attributes: [cap:96]
+      - name: product_signature
+        type: rs:option<string>
+        solana:
+          # Correct cap?
+          attributes: [cap:96]
+      - name: is_shipment_verified
+        type: bool
+  OrderDocument:
+    summary: TODO
+    solana:
+      seeds:
+        - name: order_document
+        - name: order
+          type: sol:pubkey
+    fields:
+      - name: url
+        type: string
+        solana:
+          # Correct length?
+          attributes: [cap:96]
+      - name: transaction_status
+        type: u8
+        description: |-
+          0: PlainContract
+          1: FirstSignedContract
+          2: CompleteSignedContract
+          3: FirstSignedDigital
+          4: CompleteSignedDigital
+          5: ShipmentDocument
+      - name: order
+        type: sol:pubkey
+  Transaction:
+    summary: TODO
+    solana:
+      seeds:
+        - name: transaction
+        - name: order
+          type: sol:pubkey
+    fields:
+      - name: amount
+        type: f64
+      - name: currency
+        type: string
+        solana:
+          attributes: [cap:16]
+      - name: status
+        type: u8
+        description: |-
+          0: Pending
+          1: Confirmed
+          2: Completed
+          3: Cancelled
+          4: Refunded
+      - name: kind # type
+        type: u8
+        description: |-
+          0: Fiat
+          1: Crypto
+      - name: order
+        type: sol:pubkey
+methods:
+  - name: create_user_type_buyer
+    inputs:
+      - name: user
+        type: User
+        solana:
+          attributes: [init]
+          seeds:
+            id: user_id
+      - name: company
+        type: Company
+        solana:
+          attributes: [init]
+      - name: shipping
+        type: ShippingAddress
+        solana:
+          attributes: [init]
+      - name: user_id
+        type: string
+      - name: company_name
+        type: string
+      - name: registration_number
+        type: string
+      - name: address
+        type: string
+      - name: accreditations
+        type: rs:option<string>
+      - name: contact_number
+        type: rs:option<string>
+      - name: key_person
+        type: string
+      - name: key_person_role
+        type: string
+      - name: shipping_address
+        type: string
+      - name: shipping_label
+        type: string
+  - name: create_user_type_supplier
+    inputs:
+      - name: user
+        type: User
+        solana:
+          attributes: [init]
+          seeds:
+            id: user_id
+      - name: company
+        type: Company
+        solana:
+          attributes: [init]
+      - name: shipping_information
+        type: ShippingInformation
+        solana:
+          attributes: [init]
+      - name: user_id
+        type: string
+      - name: company_name
+        type: string
+      - name: registration_number
+        type: string
+      - name: address
+        type: string
+      - name: accreditations
+        type: rs:option<string>
+      - name: contact_number
+        type: rs:option<string>
+      - name: key_person
+        type: string
+      - name: key_person_role
+        type: string
+      - name: shipping_radius
+        type: string
+      - name: shipping_address
+        type: string
+      - name: shipping_method
+        type: string
+      - name: shipping_provider
+        type: string
+      - name: shipping_cost
+        type: u64
+      - name: shipping_currency
+        type: string
+      - name: shipping_insurance_provider
+        type: rs:option<string>
+      - name: shipping_insurance_charges
+        type: rs:option<u64>
+      - name: shipping_other_charges
+        type: rs:option<u64>
+  - name: create_currency
+    inputs:
+      - name: currency
+        type: Currency
+        solana:
+          attributes: [init]
+          seeds:
+            symbol: symbol
+      - name: symbol
+        type: string
+      - name: name
+        type: string
+      - name: value
+        type: f64
+  - name: create_unit
+    inputs:
+      - name: unit
+        type: AuctionWeightUnit
+        solana:
+          attributes: [init]
+          seeds:
+            name: name
+      - name: name
+        type: string
+      - name: conversion_rate
+        type: u64
+  - name: create_auction
+    inputs:
+      - name: company
+        type: Company
+      - name: currency
+        type: Currency
+      - name: unit
+        type: AuctionWeightUnit
+      - name: auction
+        type: Auction
+        solana:
+          attributes: [init]
+      - name: name
+        type: string
+      - name: purity_level
+        type: string
+      - name: color_of_hydrogen
+        type: string
+      - name: weight
+        type: f64
+      - name: thumbnail_image
+        type: rs:option<string>
+      - name: price
+        type: f64 # Maybe not work with floats for precision?
+      - name: end_date
+        description: Timestamp for the end date
+        type: u64
+      - name: kind # type
+        type: u8
+      - name: label
+        type: u8
+  - name: create_auction_bid
+    inputs:
+      - name: company
+        type: Company
+      - name: auction
+        type: Auction
+      - name: bid
+        type: AuctionBid
+        solana:
+          attributes: [init]
+      - name: amount
+        type: u64
+      - name: is_anonymous
+        type: bool
+  - name: purchase_auction
+    inputs:
+      - name: company
+        type: Company
+      - name: auction
+        type: Auction
+        solana:
+          attributes: [mut]
+      - name: bid
+        type: AuctionBid
+        solana:
+          attributes: [init]
+      - name: amount
+        type: u64
+      - name: is_anonymous
+        type: bool
+errors:
+  - id: AuctionIsNotOpen
+    msg: Cannot create bid, auction not open
