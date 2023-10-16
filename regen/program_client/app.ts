@@ -31,11 +31,15 @@ import {
 } from "./index";
 
 async function main(feePayer: Keypair) {
-    const connection = new Connection("https://api.devnet.solana.com", {
+    /**
+     * connection string -> url to your solana wallet
+     */
+    // TODO: update connection param to wallet RPC url
+    const connection = new Connection("http://127.0.0.1:8899", {
         commitment: "confirmed"
     });
     // TODO: Specify the smart contract Program Id we saved from when we deploy the smart contract
-    const progId = new PublicKey("DVvaRFwhqRmwfZ2PJ659tCLR98edRQvpdfkz6H9m966V");
+    const progId = new PublicKey("4SF9Awf9dsygkuTHVJ2tLpZLokZ9iHNeYgsMnp4AtbgW");
 
     initializeClient(progId, connection);
 
